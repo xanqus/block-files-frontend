@@ -1,13 +1,29 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import ExtensionKeywordBlock from "./components/ExtensionKeywordBlock";
 import Layout from "./layout/Layout";
 
 function App() {
+  const [loading, setLoading] = useState(true);
   const [extensionKeyword, setExtensionKeyword] = useState("");
+  const [extensionKeywordList, setExtensionKeywordList] = useState("");
 
   const onChangeExtensionKeywordInput = (e) => {
     setExtensionKeyword(e.target.value);
   };
+
+  useEffect(() => {
+    const getExtensionKeywords = async () => {
+      const extensionKeywords = await axios({
+        url: "http://localhost:8287/block-file-extension",
+        method: "GET",
+      });
+      setExtensionKeywordList(extensionKeywords.data);
+      setLoading(false);
+    };
+
+    getExtensionKeywords();
+  }, []);
 
   const sendExtensionKeyword = async () => {
     const data = await axios({
@@ -20,6 +36,8 @@ function App() {
     setExtensionKeyword("");
     console.log("data: ", data);
   };
+
+  if (loading) return <div>loading...</div>;
   return (
     <Layout>
       <hr className="h-1 bg-black border-0" />
@@ -74,9 +92,9 @@ function App() {
               <div className="border border-gray-500/50 w-96 min-h-[15rem]">
                 <div className="pl-4">1/200</div>
                 <div className="flex gap-2 flex-wrap justify-start pl-4 pt-4">
-                  <div className="flex justify-center items-center border border-gray-500/50 w-16 h-6 rounded-md">
-                    sh<span className="pl-2 text-xs">❌</span>
-                  </div>
+                  {extensionKeywordList.map((ele, index) => (
+                    <ExtensionKeywordBlock extensionKeyword={ele} key={index} />
+                  ))}
                 </div>
               </div>
             </div>
