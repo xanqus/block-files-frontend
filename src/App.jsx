@@ -8,20 +8,33 @@ function App() {
   const [extensionKeyword, setExtensionKeyword] = useState("");
   const [extensionKeywordList, setExtensionKeywordList] = useState("");
 
+  const toggleExtensionKeyword = async (keyword) => {
+    await axios({
+      url: "http://localhost:8287/block-file-extension/toggle",
+      method: "POST",
+      data: {
+        extensionKeyword: keyword,
+      },
+    });
+    const updatedExtensionKeywordList = await axios({
+      url: "http://localhost:8287/block-file-extension",
+      method: "GET",
+    });
+    setExtensionKeywordList(updatedExtensionKeywordList.data);
+  };
   const onChangeExtensionKeywordInput = (e) => {
     setExtensionKeyword(e.target.value);
   };
+  const getExtensionKeywords = async () => {
+    const extensionKeywords = await axios({
+      url: "http://localhost:8287/block-file-extension",
+      method: "GET",
+    });
+    setExtensionKeywordList(extensionKeywords.data);
+    setLoading(false);
+  };
 
   useEffect(() => {
-    const getExtensionKeywords = async () => {
-      const extensionKeywords = await axios({
-        url: "http://localhost:8287/block-file-extension",
-        method: "GET",
-      });
-      setExtensionKeywordList(extensionKeywords.data);
-      setLoading(false);
-    };
-
     getExtensionKeywords();
   }, []);
 
@@ -34,6 +47,7 @@ function App() {
       },
     });
     setExtensionKeyword("");
+    getExtensionKeywords();
     console.log("data: ", data);
   };
 
@@ -49,25 +63,102 @@ function App() {
           <div className="w-48">고정 확장자</div>
           <div className="flex gap-4">
             <div>
-              <input type="checkbox" /> bat
+              <input
+                type="checkbox"
+                checked={
+                  extensionKeywordList.filter(
+                    (e) => e.extensionKeyword === "bat"
+                  ).length > 0
+                }
+                onChange={() => {
+                  toggleExtensionKeyword("bat");
+                }}
+              />{" "}
+              bat
             </div>
             <div>
-              <input type="checkbox" /> cmd
+              <input
+                type="checkbox"
+                checked={
+                  extensionKeywordList.filter(
+                    (e) => e.extensionKeyword === "cmd"
+                  ).length > 0
+                }
+                onChange={() => {
+                  toggleExtensionKeyword("cmd");
+                }}
+              />{" "}
+              cmd
             </div>
             <div>
-              <input type="checkbox" /> com
+              <input
+                type="checkbox"
+                checked={
+                  extensionKeywordList.filter(
+                    (e) => e.extensionKeyword === "com"
+                  ).length > 0
+                }
+                onChange={() => {
+                  toggleExtensionKeyword("com");
+                }}
+              />{" "}
+              com
             </div>
             <div>
-              <input type="checkbox" /> cpl
+              <input
+                type="checkbox"
+                checked={
+                  extensionKeywordList.filter(
+                    (e) => e.extensionKeyword === "cpl"
+                  ).length > 0
+                }
+                onChange={() => {
+                  toggleExtensionKeyword("cpl");
+                }}
+              />{" "}
+              cpl
             </div>
             <div>
-              <input type="checkbox" /> exe
+              <input
+                type="checkbox"
+                checked={
+                  extensionKeywordList.filter(
+                    (e) => e.extensionKeyword === "exe"
+                  ).length > 0
+                }
+                onChange={() => {
+                  toggleExtensionKeyword("exe");
+                }}
+              />{" "}
+              exe
             </div>
             <div>
-              <input type="checkbox" /> scr
+              <input
+                type="checkbox"
+                checked={
+                  extensionKeywordList.filter(
+                    (e) => e.extensionKeyword === "scr"
+                  ).length > 0
+                }
+                onChange={() => {
+                  toggleExtensionKeyword("scr");
+                }}
+              />{" "}
+              scr
             </div>
             <div>
-              <input type="checkbox" /> js
+              <input
+                type="checkbox"
+                checked={
+                  extensionKeywordList.filter(
+                    (e) => e.extensionKeyword === "js"
+                  ).length > 0
+                }
+                onChange={() => {
+                  toggleExtensionKeyword("js");
+                }}
+              />{" "}
+              js
             </div>
           </div>
         </div>
@@ -93,7 +184,10 @@ function App() {
                 <div className="pl-4">1/200</div>
                 <div className="flex gap-2 flex-wrap justify-start pl-4 pt-4">
                   {extensionKeywordList.map((ele, index) => (
-                    <ExtensionKeywordBlock extensionKeyword={ele} key={index} />
+                    <ExtensionKeywordBlock
+                      extensionKeywordData={ele}
+                      key={index}
+                    />
                   ))}
                 </div>
               </div>
