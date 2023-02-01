@@ -1,7 +1,25 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
 import Layout from "./layout/Layout";
 
 function App() {
+  const [extensionKeyword, setExtensionKeyword] = useState("");
+
+  const onChangeExtensionKeywordInput = (e) => {
+    setExtensionKeyword(e.target.value);
+  };
+
+  const sendExtensionKeyword = async () => {
+    const data = await axios({
+      url: "http://localhost:8287/block-file-extension",
+      method: "POST",
+      data: {
+        extensionKeyword,
+      },
+    });
+    setExtensionKeyword("");
+    console.log("data: ", data);
+  };
   return (
     <Layout>
       <hr className="h-1 bg-black border-0" />
@@ -42,14 +60,19 @@ function App() {
               <input
                 className="border-2 border-gray-500/50 rounded-md"
                 type="text"
+                value={extensionKeyword}
+                onChange={onChangeExtensionKeywordInput}
               />
-              <div className="flex justify-center items-center text-white w-16 bg-gray-600/50 cursor-pointer rounded-md">
+              <div
+                className="flex justify-center items-center text-white w-16 bg-gray-600/50 cursor-pointer rounded-md"
+                onClick={sendExtensionKeyword}
+              >
                 +추가
               </div>
             </div>
             <div>
               <div className="border border-gray-500/50 w-96 min-h-[15rem]">
-                <div>0/200</div>
+                <div className="pl-4">1/200</div>
                 <div className="flex gap-2 flex-wrap justify-start pl-4 pt-4">
                   <div className="flex justify-center items-center border border-gray-500/50 w-16 h-6 rounded-md">
                     sh<span className="pl-2 text-xs">❌</span>
