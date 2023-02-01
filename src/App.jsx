@@ -39,16 +39,19 @@ function App() {
   }, []);
 
   const sendExtensionKeyword = async () => {
-    const data = await axios({
-      url: "http://localhost:8287/block-file-extension",
-      method: "POST",
-      data: {
-        extensionKeyword,
-      },
-    });
+    try {
+      const data = await axios({
+        url: "http://localhost:8287/block-file-extension",
+        method: "POST",
+        data: {
+          extensionKeyword,
+        },
+      });
+    } catch (e) {
+      alert(e.response.data.message);
+    }
     setExtensionKeyword("");
     getExtensionKeywords();
-    console.log("data: ", data);
   };
 
   if (loading) return <div>loading...</div>;
@@ -183,12 +186,14 @@ function App() {
               <div className="border border-gray-500/50 w-96 min-h-[15rem]">
                 <div className="pl-4">1/200</div>
                 <div className="flex gap-2 flex-wrap justify-start pl-4 pt-4">
-                  {extensionKeywordList.map((ele, index) => (
-                    <ExtensionKeywordBlock
-                      extensionKeywordData={ele}
-                      key={index}
-                    />
-                  ))}
+                  {extensionKeywordList
+                    .filter((e) => e.type === "custom")
+                    .map((ele, index) => (
+                      <ExtensionKeywordBlock
+                        extensionKeywordData={ele}
+                        key={index}
+                      />
+                    ))}
                 </div>
               </div>
             </div>

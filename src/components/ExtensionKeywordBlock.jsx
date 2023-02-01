@@ -2,7 +2,6 @@ import React from "react";
 
 const ExtensionKeywordBlock = ({ extensionKeywordData }) => {
   const deleteBlockFileExtension = () => {};
-  console.log(extensionKeywordData);
   return (
     <div className="flex justify-center items-center border border-gray-500/50 w-16 h-6 rounded-md">
       {extensionKeywordData.extensionKeyword}
