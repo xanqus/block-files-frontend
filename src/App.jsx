@@ -40,7 +40,7 @@ function App() {
 
   const sendExtensionKeyword = async () => {
     try {
-      const data = await axios({
+      await axios({
         url: "http://localhost:8287/block-file-extension",
         method: "POST",
         data: {
@@ -174,6 +174,9 @@ function App() {
                 type="text"
                 value={extensionKeyword}
                 onChange={onChangeExtensionKeywordInput}
+                onKeyDown={(e) => {
+                  if (e.code === "Enter") sendExtensionKeyword();
+                }}
               />
               <div
                 className="flex justify-center items-center text-white w-16 bg-gray-600/50 cursor-pointer rounded-md"
@@ -184,7 +187,13 @@ function App() {
             </div>
             <div>
               <div className="border border-gray-500/50 w-96 min-h-[15rem]">
-                <div className="pl-4">1/200</div>
+                <div className="pl-4">
+                  {
+                    extensionKeywordList.filter((e) => e.type === "custom")
+                      .length
+                  }
+                  /200
+                </div>
                 <div className="flex gap-2 flex-wrap justify-start pl-4 pt-4">
                   {extensionKeywordList
                     .filter((e) => e.type === "custom")
