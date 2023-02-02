@@ -40,6 +40,7 @@ function App() {
 
   const sendExtensionKeyword = async () => {
     try {
+      console.log("hi");
       await axios({
         url: "http://localhost:8287/block-file-extension",
         method: "POST",
@@ -48,9 +49,22 @@ function App() {
         },
       });
     } catch (e) {
+      console.log("error: " + e);
       alert(e.response.data.message);
     }
     setExtensionKeyword("");
+    getExtensionKeywords();
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.code === "Enter") sendExtensionKeyword();
+  };
+
+  const deleteAll = async () => {
+    await axios({
+      url: "http://localhost:8287/block-file-extension/all",
+      method: "DELETE",
+    });
     getExtensionKeywords();
   };
 
@@ -174,15 +188,19 @@ function App() {
                 type="text"
                 value={extensionKeyword}
                 onChange={onChangeExtensionKeywordInput}
-                onKeyDown={(e) => {
-                  if (e.code === "Enter") sendExtensionKeyword();
-                }}
+                onKeyDown={handleKeyDown}
               />
               <div
                 className="flex justify-center items-center text-white w-16 bg-gray-600/50 cursor-pointer rounded-md"
                 onClick={sendExtensionKeyword}
               >
                 +추가
+              </div>
+              <div
+                className="flex justify-center items-center text-white w-20 bg-red-600/80 cursor-pointer rounded-md"
+                onClick={deleteAll}
+              >
+                전체삭제
               </div>
             </div>
             <div>
@@ -200,6 +218,7 @@ function App() {
                     .map((ele, index) => (
                       <ExtensionKeywordBlock
                         extensionKeywordData={ele}
+                        setExtensionKeywordList={setExtensionKeywordList}
                         key={index}
                       />
                     ))}

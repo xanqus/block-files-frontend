@@ -1,7 +1,21 @@
+import axios from "axios";
 import React from "react";
 
-const ExtensionKeywordBlock = ({ extensionKeywordData }) => {
-  const deleteBlockFileExtension = () => {};
+const ExtensionKeywordBlock = ({
+  extensionKeywordData,
+  setExtensionKeywordList,
+}) => {
+  const deleteBlockFileExtension = async () => {
+    await axios({
+      url: `http://localhost:8287/block-file-extension/${extensionKeywordData.id}`,
+      method: "DELETE",
+    });
+    const updatedExtensionKeywordList = await axios({
+      url: "http://localhost:8287/block-file-extension",
+      method: "GET",
+    });
+    setExtensionKeywordList(updatedExtensionKeywordList.data);
+  };
   return (
     <div className="flex justify-center items-center border border-gray-500/50 h-6 rounded-md px-2">
       {extensionKeywordData.extensionKeyword}
