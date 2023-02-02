@@ -7,11 +7,11 @@ const ExtensionKeywordBlock = ({
 }) => {
   const deleteBlockFileExtension = async () => {
     await axios({
-      url: `http://localhost:8287/block-file-extension/${extensionKeywordData.id}`,
+      url: `https://api.pre-test.cono.oa.gg/block-file-extension/${extensionKeywordData.id}`,
       method: "DELETE",
     });
     const updatedExtensionKeywordList = await axios({
-      url: "http://localhost:8287/block-file-extension",
+      url: "https://api.pre-test.cono.oa.gg/block-file-extension",
       method: "GET",
     });
     setExtensionKeywordList(updatedExtensionKeywordList.data);

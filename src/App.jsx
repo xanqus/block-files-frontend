@@ -10,14 +10,14 @@ function App() {
 
   const toggleExtensionKeyword = async (keyword) => {
     await axios({
-      url: "http://localhost:8287/block-file-extension/toggle",
+      url: "https://api.pre-test.cono.oa.gg/block-file-extension/toggle",
       method: "POST",
       data: {
         extensionKeyword: keyword,
       },
     });
     const updatedExtensionKeywordList = await axios({
-      url: "http://localhost:8287/block-file-extension",
+      url: "https://api.pre-test.cono.oa.gg/block-file-extension",
       method: "GET",
     });
     setExtensionKeywordList(updatedExtensionKeywordList.data);
@@ -27,7 +27,7 @@ function App() {
   };
   const getExtensionKeywords = async () => {
     const extensionKeywords = await axios({
-      url: "http://localhost:8287/block-file-extension",
+      url: "https://api.pre-test.cono.oa.gg/block-file-extension",
       method: "GET",
     });
     setExtensionKeywordList(extensionKeywords.data);
@@ -42,7 +42,7 @@ function App() {
     try {
       console.log("hi");
       await axios({
-        url: "http://localhost:8287/block-file-extension",
+        url: "https://api.pre-test.cono.oa.gg/block-file-extension",
         method: "POST",
         data: {
           extensionKeyword,
@@ -62,7 +62,7 @@ function App() {
 
   const deleteAll = async () => {
     await axios({
-      url: "http://localhost:8287/block-file-extension/all",
+      url: "https://api.pre-test.cono.oa.gg/block-file-extension/all",
       method: "DELETE",
     });
     getExtensionKeywords();
